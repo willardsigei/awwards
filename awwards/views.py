@@ -3,8 +3,12 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 from .models import *
 from django.contrib import messages
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializer import *
 
 # Create your views here.
+
 
 @login_required(login_url='/accounts/login/')
 def home(request):
@@ -27,7 +31,6 @@ def registration(request):
         'form':form,
     }
     return render(request, 'registration/register.html', context)
-
 
 @login_required(login_url='/accounts/login/')
 def profile(request):
@@ -116,3 +119,20 @@ def search_projects(request):
 
         return render(request, 'search.html', {"message":message})
 
+
+class ProfileList(APIView):
+    def get(self, request, format=None):
+        all_merch = Profile.objects.all()
+        serializers = ProfileSerializer(all_merch, many=True)
+        return Response(serializers.data)
+
+class ProjectsList(APIView):
+    def get(self, request, format=None):
+        all_merch = Projects.objects.all()
+        serializers = ProjectSerializer(all_merch, many=True)
+        return Response(serializers.data)
+
+
+
+
+    

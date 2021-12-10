@@ -11,6 +11,16 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import dj_database_url
+from decouple import config,Csv
+import django_heroku
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +41,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'star_ratings',
+    'cloudinary',
     'bootstrap4',
     'awwards',
     'django.contrib.admin',
@@ -125,3 +138,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+cloudinary.config( 
+  cloud_name = "dcqlinvpj", 
+  api_key = "823699933136938", 
+  api_secret = "Rq9lVViYC7C9pCZNDda2shb91Zo" 
+)
