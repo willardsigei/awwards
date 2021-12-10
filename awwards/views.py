@@ -79,3 +79,40 @@ def updateprofile(request):
 
     return render(request, 'profile/update_profile.html', context)
 
+
+@login_required(login_url='/accounts/login/')
+def postproject(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, request.FILES)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.author = current_user
+            project.save()
+        return redirect('/')
+    else:
+        form = ProjectForm()
+    context = {
+        'form':form,
+    }
+    return render(request, 'PostProject.html', context)
+
+@login_required(login_url='/accounts/login/')
+def get_project(request, id):
+    project = Projects.objects.get(pk=id)
+
+    return render(request, 'project.html', {'project':project})
+
+@login_required(login_url='/accounts/login/')
+def search_projects(request):
+    if 'project' in request.GET and request.GET['project']:
+        search_term = request.GET["project"]
+        searched_projects = Projects.search_projects(search_term)
+        message = f"{search_term}"
+        
+        return render(request, 'search.html', {"message":message, "projects": searched_projects})
+    else:
+        message = "You haven't searched for any user"
+
+        return render(request, 'search.html', {"message":message})
+
