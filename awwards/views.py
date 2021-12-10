@@ -27,3 +27,4 @@ def registration(request):
         'form':form,
     }
     return render(request, 'registration/register.html', context)
+
